@@ -1,0 +1,10 @@
+services:
+  firestore-emulator:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    container_name: minegov-firestore-emulator
+    restart: unless-stopped
+    command: gcloud beta emulators firestore start --host-port=0.0.0.0:8080
+    ports:
+      - "8080:8080"
+    environment:
+      CLOUDSDK_CORE_PROJECT: minegov-ai
