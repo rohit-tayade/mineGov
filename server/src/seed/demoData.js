@@ -7,7 +7,7 @@ import { create, databaseMode, list, newId, remove, update } from '../config/dat
 const day = 24 * 60 * 60 * 1000;
 const ago = (days) => new Date(Date.now() - days * day).toISOString();
 const fromNow = (days) => new Date(Date.now() + days * day).toISOString();
-const demoPassword = 'MineGov2026!';
+const demoPassword = process.env.DEMO_PASSWORD;//
 const uploadDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../uploads');
 const demoEvidenceUrl = '/api/uploads/files/demo-evidence.txt';
 async function ensureDemoEvidence() {
@@ -61,6 +61,9 @@ const roleUsers = [
 
 export async function seedDemoData({ force = false } = {}) {
   await ensureDemoEvidence();
+  if (!demoPassword) {
+  throw new Error('DEMO_PASSWORD is required.');
+}
   const existingUsers = await list('users');
   if (existingUsers.length && !force) return { seeded: false, message: 'Data already exists.' };
   if (force) {
